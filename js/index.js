@@ -1,5 +1,7 @@
 const URL_API = "https://back-pizzaria-deployed.vercel.app";
 
+const form = document.querySelector('form');
+
 const tableBody = document.querySelector('#clientesTable tbody');
 
 async function fetchClientes() {
