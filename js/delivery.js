@@ -56,8 +56,12 @@ async function cadastrarCliente() {
 }
 
 
-document.getElementById('finalizarPedido').addEventListener('click', async () => {
-    let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+const finalizarPedidoBtn = document.getElementById('finalizarPedido');
+
+if (finalizarPedidoBtn) {
+    finalizarPedidoBtn.addEventListener('click', async () => {
+
+let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
 
     if (carrinho.length === 0) {
         alert("Seu carrinho está vazio!");
@@ -117,4 +121,7 @@ document.getElementById('finalizarPedido').addEventListener('click', async () =>
         console.error(err);
         alert("Erro ao conectar com o servidor.");
     }
+
 });
+
+}
