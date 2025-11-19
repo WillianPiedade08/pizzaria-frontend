@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrinho seuZé</title>
+  <link rel="stylesheet" href="../css/carrinho.css" />
+  <style>
+  
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #000000
+;
+      color: #ffc506;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    header button {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #000000;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    header button:hover {
+      background: #777;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #000000;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    #carrinho-container {
+      flex: 2;
+      min-width: 300px;
+      color: #eee;
+    }
+
+    #resumo {
+      flex: 1;
+      min-width: 250px;
+      background: #eee;
+      padding: 1rem;
+      border-radius: 5px;
+    }
+
+    .item-carrinho {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1rem;
+    }
+
+    .item-carrinho img {
+      max-width: 80px;
+      max-height: 80px;
+      object-fit: cover;
+    }
+
+    .item-carrinho .info {
+      flex-grow: 1;
+    }
+
+    .item-carrinho .info h3 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .item-carrinho .info p {
+      margin: 0.2rem 0;
+    }
+
+    .item-carrinho .info label {
+      display: block;
+      margin-top: 0.5rem;
+    }
+
+    .item-carrinho .info input[type="number"] {
+      width: 50px;
+      padding: 0.2rem;
+    }
+
+    #resumo h2 {
+      margin-top: 0;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+
+    #formas-pagamento,
+    #dados-pagamento,
+    .campo-cep {
+      margin-top: 1rem;
+    }
+
+    #formas-pagamento label,
+    .campo-cep label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    #dados-pagamento input,
+    .campo-cep input {
+      display: block;
+      width: calc(100% - 1rem);
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    #enviar-pedido {
+      background-color: #ffc506;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    #enviar-pedido:hover {
+      background-color: #ffc506;
+    }
+
+    
+@media (max-width: 600px) {
+      main {
+        flex-direction: column;
+      }
+
+      header button {
+        position: static;
+        transform: none;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Carrinho de Compras</h1>
+    <button onclick="window.location.href='delivery.html'">⬅️ Voltar</button>
+  </header>
+
+  <main>
+    <div id="carrinho-container">
+      
+      <p>Seu carrinho está vazio.</p>
+    </div>
+
+    <div id="resumo">
+      <h2>Total: <span id="total">R$ 0,00</span></h2>
+
+      <div class="campo-cep">
+        <label for="cep"><strong>CEP para Entrega:</strong></label>
+        <input type="text" id="cep" placeholder="CEP (ex: 12345-678)" required>
+      </div>
+
+      <div id="formas-pagamento">
+        <p><strong>Forma de Pagamento:</strong></p>
+        <label><input type="radio" name="pagamento" value="Pix" checked> Pix</label>
+        <label><input type="radio" name="pagamento" value="Cartão"> Cartão de Crédito</label>
+        <label><input type="radio" name="pagamento" value="Boleto"> Boleto</label>
+        <label><input type="radio" name="pagamento" value="Cartão de Débito"> Cartão de Débito</label>
+      </div>
+
+      <div id="dados-pagamento">
+        
+      </div>
+
+      <button id="enviar-pedido">Finalizar Pedido</button>
+    </div>
+  </main>
+
+  <script src="../js/carrinho.js"></script>
+
+</body>
+ 
+</html>

@@ -1,0 +1,210 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background-size: cover;
+    background-color: #fff8f0;
+    background-image: url('../img/ez.jpg');
+    color: #4e403d2d;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.containerheader {
+    background-color: #241e1e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    position: fixed;   
+    top: 0;            
+    left: 0;           
+    width: 100%;       
+    z-index: 100;      
+}
+
+.containerLogo img {
+    width: 120px;
+    height: auto;
+    margin-right: 40px;
+}
+
+.containerMenu {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.containerMenu nav a {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    margin: 0 25px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.containerMenu nav a:hover,
+.containerMenu nav a.active {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.first-section {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.first-section h1 {
+    color: #000000;
+    font-size: 4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 0 #ffd54f, -2px -2px 0 #ffd54f, 2px -2px 0 #ffd54f, -2px 2px 0 #ffd54f; /* contorno amarelo */
+}
+
+.first-section h2 {
+    color: #ffd54f;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000; /* contorno preto */
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 2px;
+}
+
+
+.btn {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn button {
+    background-color: #ffd900;
+    color: #000000;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 400ms ease-in;
+}
+
+.btn button:hover {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.recentes {
+    background-color: #fffde7;
+    color: #a93226;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.recentes h2 {
+    color: #a93226;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.itens-cardapio .info {
+    background-color: #fff8f0;
+    color: #3e2723;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.itens-cardapio .info h3 {
+    color: #a93226;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.itens-cardapio .info h4 span {
+    color: #ffd54f;
+}
+
+.itens-cardapio .info .pedir {
+    background-color: #a93226;
+    color: #fffde7;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.itens-cardapio .info .pedir:hover {
+    background-color: #ffd54f;
+    color: #a93226;
+}
+
+.contatos {
+    background-color: #a93226;
+    color: #fffde7;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.contatos h3 {
+    color: #ffd54f;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.contatos-secao a {
+    color: #fffde7;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contatos-secao a:hover {
+    color: #ffd54f;
+}
+
+
+@media (max-width: 900px) {
+    .containerheader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .btn {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .first-section h1 {
+        font-size: 2.2rem;
+    }
+
+    .first-section h2 {
+        font-size: 1.3rem;
+    }
+
+    .containerLogo img {
+        width: 80px;
+    }
+}
