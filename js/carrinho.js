@@ -1,4 +1,4 @@
-fetch('https://back-pizzaria-deployed.vercel.app/pedidos')
+fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
   .then(response => {
     if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
     return response.json();

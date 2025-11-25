@@ -1,4 +1,4 @@
-const URL_API = "https://back-pizzaria-deployed.vercel.app";
+const URL_API = "https://api-pizzas-seu-ze.vercel.app";
 
 const form = document.querySelector('form');
 

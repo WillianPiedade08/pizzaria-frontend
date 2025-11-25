@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es" dir="ltr">
+<html lang="pt-BR" dir="ltr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Login</title>
+    <title>Entrar</title>
     <link rel="stylesheet" href="../css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
@@ -11,29 +11,27 @@
     <main class="main">
         <div class="container a-container" id="a-container">
             <form id="a-form" class="form" method="post" action="">
-                <h2 class="form_title title">Create Account</h2>
+                <h2 class="form_title title">Criar Conta</h2>
                 <div class="form__icons">
-                    <!-- ícones aqui, se necessário -->
                 </div>
-                <span class="form__span">or use email for registration</span>
-                <input class="form__input" type="text" name="name" placeholder="Name" required>
-                <input class="form__input" type="email" name="email" placeholder="Email" required>
-                <input class="form__input" type="password" name="password" placeholder="Password" required>
-                <button type="submit" class="form__button button submit">SIGN UP</button>
+                <span class="form__span">ou use seu e-mail para cadastro</span>
+                <input class="form__input" type="text" name="name" placeholder="Nome" required>
+                <input class="form__input" type="email" name="email" placeholder="E-mail" required>
+                <input class="form__input" type="password" name="password" placeholder="Senha" required>
+                <button type="submit" class="form__button button submit">CADASTRAR</button>
             </form>
         </div>
 
         <div class="container b-container" id="b-container">
             <form id="b-form" class="form" method="post" action="">
-                <h2 class="form_title title">Sign in to Website</h2>
+                <h2 class="form_title title">Entrar</h2>
                 <div class="form__icons">
-                    <!-- ícones aqui, se necessário -->
                 </div>
-                <span class="form__span">or use your email account</span>
-                <input class="form__input" type="email" name="email" placeholder="Email" required>
-                <input class="form__input" type="password" name="password" placeholder="Password" required>
-                <a class="form__link" href="#">Forgot your password?</a>
-                <button type="submit" class="form__button button submit">SIGN IN</button>
+                <span class="form__span">ou use seu e-mail</span>
+                <input class="form__input" type="email" name="email" placeholder="E-mail" required>
+                <input class="form__input" type="password" name="password" placeholder="Senha" required>
+                <a class="form__link" href="#">Esqueceu sua senha?</a>
+                <button type="submit" class="form__button button submit">ENTRAR</button>
             </form>
         </div>
 
@@ -42,32 +40,18 @@
             <div class="switch__circle switch__circle--t"></div>
 
             <div class="switch__container" id="switch-c1">
-                <h2 class="switch__title title">Welcome Back!</h2>
-                <p class="switch__description description">To keep connected with us please login with your personal info</p>
-                <button class="switch__button button switch-btn" id="to-signin">SIGN IN</button>
+                <h2 class="switch__title title">Bem-vindo de volta!</h2>
+                <p class="switch__description description">Para continuar conectado(a), faça login com seus dados</p>
+                <button class="switch__button button switch-btn" id="to-signin">ENTRAR</button>
             </div>
 
             <div class="switch__container is-hidden" id="switch-c2">
-                <h2 class="switch__title title">Hello Friend!</h2>
-                <p class="switch__description description">Enter your personal details and start journey with us</p>
-                <button a href ="../index.html" class="switch__button button switch-btn" id="to-signup" >SIGN UP</button>
+                <h2 class="switch__title title">Olá!</h2>
+                <p class="switch__description description">Insira seus dados pessoais e comece a sua jornada conosco</p>
+                <button class="switch__button button switch-btn" id="to-signup">CADASTRAR</button>
             </div>
         </div>
     </main>
-
-    <script>
-    // comportamento simples para alternar (opcional)
-    document.addEventListener('click', function (e) {
-      if (e.target && e.target.id === 'to-signup') {
-        document.getElementById('a-container').classList.add('active');
-        document.getElementById('b-container').classList.remove('active');
-      }
-      if (e.target && e.target.id === 'to-signin') {
-        document.getElementById('a-container').classList.remove('active');
-        document.getElementById('b-container').classList.add('active');
-      }
-    });
-    </script>
 </body>
 <script src="../js/login.js"></script>
 </html>
