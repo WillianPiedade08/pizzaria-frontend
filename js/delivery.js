@@ -1,89 +1,73 @@
-const API_URL = "https://api-pizzas-seu-ze.vercel.app/produtos";
-
 async function carregarProdutos() {
     try {
-        const res = await fetch(API_URL); // rota REAL
-        const produtos = await res.json();
+        const resposta = await fetch("https://api-pizzas-seu-ze.vercel.app/produtos");
+        const produtos = await resposta.json();
 
-        console.log("Produtos recebidos:", produtos); // DEBUG
-
-        const listaSalgados = document.getElementById("lista-produtos-salgados");
-        const listaDoces = document.getElementById("lista-produtos-doces");
-
-        listaSalgados.innerHTML = "";
-        listaDoces.innerHTML = "";
+        const lista = document.getElementById("lista-produtos");
+        lista.innerHTML = "";
 
         produtos.forEach(produto => {
 
-            // ===== CAMPOS CORRETOS =====
-            const id = produto.produto_id; 
-            const nome = produto.nome;
-            const preco = Number(produto.preco);
-            const descricao = produto.descricao;
+            const id = produto.produto_id;
+            const nome = produto.nome || "Sem nome";
+            const descricao = produto.descricao || "";
+            const preco = Number(produto.preco) || 0;
+            const imagem = produto.imagem || "../img/sem-foto.png";
 
-            // Imagem — com fallback
-            const imagem = produto.imagem && produto.imagem !== "null" && produto.imagem !== ""
-                ? produto.imagem
-                : "../img/sem-foto.png";
+            const card = document.createElement("article");
+            card.classList.add("product");
 
-            const card = `
-                <article class="product">
-                    <h2>${nome}</h2>
-                    <img src="${imagem}" alt="${nome}">
-                    <p>${descricao || ""}</p>
-                    <span>R$ ${preco.toFixed(2)}</span>
+            card.innerHTML = `
+                <img src="${imagem}" alt="${nome}">
 
-                    <button class="btn-adicionar"
-                        data-id="${id}"
-                        data-nome="${nome}"
-                        data-preco="${preco}"
-                        data-imagem="${imagem}">
-                        Adicionar ao Carrinho
-                    </button>
-                </article>
+                <h2>${nome}</h2>
+
+                <p class="descricao">
+                    ${descricao}
+                </p>
+
+                <span class="preco">
+                    R$ ${preco.toFixed(2).replace(".", ",")}
+                </span>
+
+                <button class="btn-adicionar">
+                    Adicionar ao carrinho
+                </button>
             `;
 
-            // ===== Separar salgadas e doces =====  
-            if (id <= 18) {
-                listaSalgados.innerHTML += card;
-            } else {
-                listaDoces.innerHTML += card;
-            }
+            // Evento do botão
+            card.querySelector(".btn-adicionar").onclick = () => {
+                adicionarAoCarrinho({
+                    id,
+                    nome,
+                    preco,
+                    imagem,
+                    quantidade: 1
+                });
+            };
+
+            lista.appendChild(card);
         });
 
-        adicionarEventosCarrinho();
-
-    } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
+    } catch (erro) {
+        console.error("Erro ao carregar produtos:", erro);
     }
 }
 
-function adicionarEventosCarrinho() {
-    const botoes = document.querySelectorAll(".btn-adicionar");
+function adicionarAoCarrinho(produto) {
+    let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-    botoes.forEach(btn => {
-        btn.onclick = () => {
+    const existente = carrinho.find(p => p.id == produto.id);
 
-            const produto = {
-                id: btn.dataset.id,
-                nome: btn.dataset.nome,
-                preco: Number(btn.dataset.preco),
-                imagem: btn.dataset.imagem,
-                quantidade: 1
-            };
+    if (existente) {
+        existente.quantidade++;
+    } else {
+        carrinho.push(produto);
+    }
 
-            let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
-            const existente = carrinho.find(p => p.id == produto.id);
-
-            if (existente) existente.quantidade++;
-            else carrinho.push(produto);
-
-            localStorage.setItem("carrinho", JSON.stringify(carrinho));
-
-            alert(`${produto.nome} adicionado ao carrinho!`);
-        };
-    });
+    alert(`${produto.nome} foi adicionado ao carrinho!`);
 }
 
 carregarProdutos();
