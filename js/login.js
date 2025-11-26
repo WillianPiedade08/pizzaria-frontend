@@ -1,216 +1,211 @@
-const API_URL = "https://api-pizzas-seu-ze.vercel.app";
+const API_URL = "https://api-pizzas-seu-ze.vercel.app"; // **ATENÇÃO: Mude para a URL da sua API na Vercel**
 
 document.addEventListener('DOMContentLoaded', () => {
+    const loginWrapper = document.getElementById('login-form-wrapper');
+    const signupWrapper = document.getElementById('signup-form-wrapper');
+    const showSignupLink = document.getElementById('show-signup');
+    const showLoginLink = document.getElementById('show-login');
+    
+    const formCadastro = document.getElementById('form-cadastro');
+    const formLogin = document.getElementById('form-login');
 
-  // === Mostrar/Ocultar senha ===
-  function setupToggleSenha(inputId, toggleId) {
-    const input = document.getElementById(inputId);
-    const toggle = document.getElementById(toggleId);
-    let mostrando = false;
-    toggle.addEventListener('click', () => {
-      mostrando = !mostrando;
-      input.type = mostrando ? 'text' : 'password';
-    });
-  }
-  setupToggleSenha('senhaCadastro', 'toggleSenhaCadastro');
-  setupToggleSenha('senhaLogin', 'toggleSenhaLogin');
-
-  // === FUNÇÃO AUXILIAR PARA PREVENIR CLIQUES MÚLTIPLOS ===
-  function handleSubmit(form, fetchFn, buttonText = "Enviando...") {
-    const submitButton = form.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (submitButton.disabled) return;
-
-      submitButton.disabled = true;
-      submitButton.textContent = buttonText;
-
-      try {
-        await fetchFn(e);
-      } catch (err) {
-        console.error("❌ Erro no submit:", err);
-        alert("Erro de conexão. Tente novamente.");
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = originalText;
-      }
-    });
-  }
-
-  // === LOGIN ===
-  const formLogin = document.getElementById('formLogin');
-  handleSubmit(formLogin, async () => {
-    const email = formLogin.email.value.trim();
-    const senha = formLogin.senha.value;
-
-    if (!email || !senha) {
-      alert("Email e senha são obrigatórios.");
-      return;
-    }
-
-    const response = await fetch(`${API_URL}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, senha })
+    // ========================================
+    // LÓGICA DE TRANSIÇÃO ENTRE FORMULÁRIOS
+    // ========================================
+    showSignupLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        loginWrapper.classList.remove('is-active');
+        signupWrapper.classList.add('is-active');
     });
 
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      alert("Erro ao processar resposta do servidor.");
-      return;
-    }
-
-    if (response.ok) {
-      // SALVA USUARIO NO LOCALSTORAGE (adaptado ao seu backend)
-      const usuarioLogado = { email, tipo: data.tipo };
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
-
-      alert('Login bem-sucedido!');
-      window.location.href = "index.html";
-    } else {
-      alert(data.message || "Email ou senha inválidos.");
-    }
-  }, "Entrando...");
-
-  // === CADASTRO ===
-  const formCadastro = document.getElementById("formCadastro");
-  handleSubmit(formCadastro, async () => {
-    const nome = formCadastro.nome.value.trim();
-    const cpf = formCadastro.cpf.value.trim();
-    const email = formCadastro.email.value.trim();
-    const telefone = formCadastro.telefone.value.trim();
-    const senha = formCadastro.senha.value;
-
-    if (!nome || !cpf || !email || !telefone || !senha) {
-      alert("Preencha todos os campos obrigatórios.");
-      return;
-    }
-
-    const response = await fetch(`${API_URL}/usuarios`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, cpf, email, telefone, senha })
+    showLoginLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        signupWrapper.classList.remove('is-active');
+        loginWrapper.classList.add('is-active');
     });
 
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      alert("Erro ao processar resposta do servidor.");
-      return;
+    // ========================================
+    // FUNÇÃO AUXILIAR PARA PREVENIR CLIQUES MÚLTIPLOS
+    // ========================================
+    function handleSubmit(form, fetchFn, buttonText = "Enviando...") {
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (submitButton.disabled) return;
+
+            submitButton.disabled = true;
+            submitButton.textContent = buttonText;
+
+            try {
+                await fetchFn(e);
+            } catch (err) {
+                console.error("❌ Erro no submit:", err);
+                alert("Erro de conexão. Tente novamente.");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        });
     }
 
-    if (response.ok) {
-      alert("Usuário cadastrado com sucesso!");
-      document.getElementById("container").classList.remove("right-panel-active");
-      formCadastro.reset();
-    } else {
-      alert(data.message || "Erro ao cadastrar usuário.");
+    // ========================================
+    // CADASTRO (Criar Conta)
+    // Endpoint: POST /usuarios
+    // ========================================
+    handleSubmit(formCadastro, async () => {
+        const nome = formCadastro.querySelector('input[name="nome"]').value.trim();
+        const email = formCadastro.querySelector('input[name="email"]').value.trim();
+        const telefone = formCadastro.querySelector('input[name="telefone"]').value.trim();
+        const cpf = formCadastro.querySelector('input[name="cpf"]').value.trim().replace(/\D/g, ''); // Remove máscara para enviar
+        const senha = formCadastro.querySelector('input[name="senha"]').value;
+
+        // Validação no frontend
+        if (!nome || !email || !telefone || !cpf || !senha) {
+            alert("⚠️ Preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        if (senha.length < 6) {
+            alert("⚠️ A senha deve ter pelo menos 6 caracteres.");
+            return;
+        }
+        
+        if (cpf.length !== 11) {
+            alert("⚠️ O CPF deve ter 11 dígitos.");
+            return;
+        }
+
+        console.log("📤 Enviando cadastro:", { nome, email, telefone, cpf });
+
+        try {
+            // Rota corrigida para /usuarios
+            const response = await fetch(`${API_URL}/usuarios`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ nome, email, telefone, cpf, senha })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                alert("❌ Erro ao processar resposta do servidor.");
+                return;
+            }
+
+            console.log("📥 Resposta do servidor:", data);
+
+            if (response.ok) {
+                alert("✅ Usuário cadastrado com sucesso! Faça login para continuar.");
+                showLoginLink.click();
+                formCadastro.reset();
+            } else {
+                alert(`❌ ${data.error || "Erro ao cadastrar usuário."}`);
+            }
+        } catch (error) {
+            console.error("❌ Erro na requisição:", error);
+            alert("❌ Erro de conexão com o servidor. Verifique sua internet.");
+        }
+    }, "Cadastrando...");
+
+    // ========================================
+    // LOGIN (Entrar)
+    // Endpoint: POST /login
+    // ========================================
+    handleSubmit(formLogin, async () => {
+        const email = formLogin.querySelector('input[name="email"]').value.trim();
+        const senha = formLogin.querySelector('input[name="senha"]').value;
+
+        if (!email || !senha) {
+            alert("⚠️ E-mail e senha são obrigatórios.");
+            return;
+        }
+
+        console.log("📤 Enviando login:", { email });
+
+        try {
+            // Rota corrigida para /usuarios/login
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, senha })
+            });
+
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                alert("❌ Erro ao processar resposta do servidor.");
+                return;
+            }
+
+            console.log("📥 Resposta do servidor:", data);
+
+            if (response.ok) {
+                // Salva token e dados do usuário no localStorage
+                localStorage.setItem('token', data.token);
+                // CORREÇÃO: Usar 'data.usertechman' para o objeto do usuário, conforme o localStorage
+                if (data.usertechman) {
+                    localStorage.setItem('usuarioLogado', JSON.stringify(data.usertechman));
+                } else {
+                    console.warn("Usuário logado, mas objeto 'data.usertechman' não encontrado na resposta da API.");
+                }
+
+                alert('✅ Login bem-sucedido!');
+                // Redireciona para a página principal (index.html)
+                window.location.href = "../index.html"; 
+            } else {
+                alert(`❌ ${data.error || "E-mail ou senha inválidos."}`);
+            }
+        } catch (error) {
+            console.error("❌ Erro na requisição:", error);
+            alert("❌ Erro de conexão com o servidor. Verifique sua internet.");
+        }
+    }, "Entrando...");
+
+    // ========================================
+    // MÁSCARA PARA CPF
+    // ========================================
+    const cpfInput = formCadastro.querySelector('input[name="cpf"]');
+    if (cpfInput) {
+        cpfInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            
+            // Aplica máscara: 000.000.000-00
+            if (value.length > 9) {
+                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            } else if (value.length > 6) {
+                value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+            } else if (value.length > 3) {
+                value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+            }
+            
+            e.target.value = value;
+        });
     }
-  }, "Cadastrando...");
 
-  // === Alternar login/cadastro ===
-  const signUpButton = document.getElementById("signUp");
-  const signInButton = document.getElementById("signIn");
-  const container = document.getElementById("container");
-
-  signUpButton.addEventListener("click", () => container.classList.add("right-panel-active"));
-  signInButton.addEventListener("click", () => container.classList.remove("right-panel-active"));
-
-  // === MODAL RECUPERAR SENHA ===
-  const modalRecuperar = document.getElementById('modalRecuperarSenha');
-  const fecharModalRecuperar = document.getElementById('fecharModalRecuperar');
-  const formRecuperarSenha = document.getElementById('formRecuperarSenha');
-  const linkEsqueceuSenha = document.getElementById('linkEsqueceuSenha');
-
-  // Abrir modal ao clicar em "Esqueceu a senha?"
-  linkEsqueceuSenha.addEventListener('click', (e) => {
-    e.preventDefault();
-    modalRecuperar.style.display = 'block';
-  });
-
-  // Fechar modal
-  fecharModalRecuperar.addEventListener('click', () => {
-    modalRecuperar.style.display = 'none';
-  });
-
-  // Fechar modal ao clicar fora
-  window.addEventListener('click', (e) => {
-    if (e.target === modalRecuperar) {
-      modalRecuperar.style.display = 'none';
+    // ========================================
+    // MÁSCARA PARA TELEFONE
+    // ========================================
+    const telefoneInput = formCadastro.querySelector('input[name="telefone"]');
+    if (telefoneInput) {
+        telefoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            
+            // Aplica máscara: (00) 00000-0000 ou (00) 0000-0000
+            if (value.length > 10) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/(\d{2})(\d{4})(\d{1,4})/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/(\d{2})(\d{1,5})/, '($1) $2');
+            }
+            
+            e.target.value = value;
+        });
     }
-  });
-
-  // Submit do form de recuperação
- handleSubmit(formRecuperarSenha, async () => {
-  const email = formRecuperarSenha.emailRecuperacao.value.trim();
-  if (!email) {
-    alert("Digite seu email.");
-    return;
-  }
-  console.log("Enviando email para:", email); // Mova para cá (antes do fetch)
-  const response = await fetch(`${API_URL}/recuperar-senha`, { 
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email })
-  });
-
-
-    let data;
-    try {
-      data = await response.json();
-    } catch {
-      alert("Erro ao processar resposta do servidor.");
-      return;
-    }
-
-    alert(data.message); // Sempre mostra a mensagem (mesmo se email não existir, por segurança)
-
-    if (response.ok) {
-      modalRecuperar.style.display = 'none';
-      formRecuperarSenha.reset();
-    }
-    console.log("Enviando email para:", email); // Para debug
-  }, "Enviando...");
-
 });
-
-// === PERFIL / LOGOUT ===
-const perfilContainer = document.getElementById("perfil-container");
-const modalPerfil = document.getElementById("modal-perfil");
-const fecharPerfil = document.getElementById("fechar-perfil");
-const perfilEmail = document.getElementById("perfil-email");
-const btnLogout = document.getElementById("btn-logout");
-
-// Mostrar modal ao clicar no perfil
-perfilContainer.onclick = () => {
-  const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-  if(usuario && usuario.email){
-    perfilEmail.textContent = usuario.email;
-    modalPerfil.style.display = "flex";
-  } else {
-    alert("Usuário não logado.");
-  }
-};
-
-// Fechar modal
-fecharPerfil.onclick = () => modalPerfil.style.display = "none";
-window.onclick = (e) => { if(e.target === modalPerfil) modalPerfil.style.display = "none"; };
-
-// Logout
-btnLogout.onclick = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("usuarioLogado");
-  window.location.href = "login.html";
-};
-
-// Mostrar email resumido no header
-const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
-if(usuario && usuario.email){
-  document.getElementById("perfil-nome").textContent = usuario.email.split("@")[0];
-}

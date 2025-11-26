@@ -1,57 +1,77 @@
 <!DOCTYPE html>
-<html lang="pt-BR" dir="ltr">
+<html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Entrar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso à Conta</title>
     <link rel="stylesheet" href="../css/login.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <main class="main">
-        <div class="container a-container" id="a-container">
-            <form id="a-form" class="form" method="post" action="">
-                <h2 class="form_title title">Criar Conta</h2>
-                <div class="form__icons">
+    <div class="card-container" id="card-container">
+        
+        <!-- FORMULÁRIO DE LOGIN -->
+        <div class="form-wrapper is-active" id="login-form-wrapper">
+            <form id="form-login" class="form">
+                <h2 class="form-title">Entrar</h2>
+                <p class="form-subtitle">Acesse sua conta com seu e-mail e senha</p>
+                
+                <div class="input-group">
+                    <label for="login-email">E-mail</label>
+                    <input type="email" id="login-email" name="email" required>
                 </div>
-                <span class="form__span">ou use seu e-mail para cadastro</span>
-                <input class="form__input" type="text" name="name" placeholder="Nome" required>
-                <input class="form__input" type="email" name="email" placeholder="E-mail" required>
-                <input class="form__input" type="password" name="password" placeholder="Senha" required>
-                <button type="submit" class="form__button button submit">CADASTRAR</button>
+                
+                <div class="input-group">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" name="senha" required>
+                </div>
+                
+                <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                
+                <button type="submit" class="submit-btn">ENTRAR</button>
+                
+                <p class="switch-text">Não tem conta? <a href="#" id="show-signup">Cadastre-se</a></p>
             </form>
         </div>
 
-        <div class="container b-container" id="b-container">
-            <form id="b-form" class="form" method="post" action="">
-                <h2 class="form_title title">Entrar</h2>
-                <div class="form__icons">
+        <!-- FORMULÁRIO DE CADASTRO -->
+        <div class="form-wrapper" id="signup-form-wrapper">
+            <form id="form-cadastro" class="form">
+                <h2 class="form-title">Criar Conta</h2>
+                <p class="form-subtitle">Preencha todos os campos para se cadastrar</p>
+                
+                <div class="input-group">
+                    <label for="signup-nome">Nome</label>
+                    <input type="text" id="signup-nome" name="nome" required>
                 </div>
-                <span class="form__span">ou use seu e-mail</span>
-                <input class="form__input" type="email" name="email" placeholder="E-mail" required>
-                <input class="form__input" type="password" name="password" placeholder="Senha" required>
-                <a class="form__link" href="#">Esqueceu sua senha?</a>
-                <button type="submit" class="form__button button submit">ENTRAR</button>
+                
+                <div class="input-group">
+                    <label for="signup-email">E-mail</label>
+                    <input type="email" id="signup-email" name="email" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-telefone">Telefone</label>
+                    <input type="text" id="signup-telefone" name="telefone" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-cpf">CPF</label>
+                    <input type="text" id="signup-cpf" name="cpf" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="signup-senha">Senha</label>
+                    <input type="password" id="signup-senha" name="senha" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">CADASTRAR</button>
+                
+                <p class="switch-text">Já tem conta? <a href="#" id="show-login">Fazer Login</a></p>
             </form>
         </div>
+    </div>
 
-        <div class="switch" id="switch-cnt">
-            <div class="switch__circle"></div>
-            <div class="switch__circle switch__circle--t"></div>
-
-            <div class="switch__container" id="switch-c1">
-                <h2 class="switch__title title">Bem-vindo de volta!</h2>
-                <p class="switch__description description">Para continuar conectado(a), faça login com seus dados</p>
-                <button class="switch__button button switch-btn" id="to-signin">ENTRAR</button>
-            </div>
-
-            <div class="switch__container is-hidden" id="switch-c2">
-                <h2 class="switch__title title">Olá!</h2>
-                <p class="switch__description description">Insira seus dados pessoais e comece a sua jornada conosco</p>
-                <button class="switch__button button switch-btn" id="to-signup">CADASTRAR</button>
-            </div>
-        </div>
-    </main>
+    <script src="../js/login.js"></script>
 </body>
-<script src="../js/login.js"></script>
 </html>

@@ -115,7 +115,58 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
       radio.addEventListener('change', atualizarFormularioPagamento);
     });
 
-    btnEnviar.addEventListener('click', () => {
+    // --- Nova função para enviar o pedido para a API ---
+    async function enviarPedidoParaAPI(dadosDoPedido) {
+      // Usaremos o mesmo endpoint, mas é crucial que o backend esteja configurado para receber POST.
+      const API_URL = 'https://api-pizzas-seu-ze.vercel.app/pedidos'; 
+      
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dadosDoPedido),
+        });
+
+        if (!response.ok) {
+          // Tentativa de extrair a mensagem de erro do corpo da resposta
+          let errorDetails = `Erro ${response.status}: ${response.statusText}`;
+          try {
+            const errorData = await response.json();
+            if (errorData.message) {
+              errorDetails = errorData.message;
+            } else if (errorData.error) {
+              errorDetails = errorData.error;
+            }
+          } catch (e) {
+            // Ignora se o corpo não for JSON
+          }
+          
+          console.error('Detalhes do erro da API:', errorDetails);
+          throw new Error(`Falha ao enviar pedido. Verifique se o endpoint da API (${API_URL}) aceita requisições POST e se o backend está funcionando corretamente. Detalhes: ${errorDetails}`);
+        }
+
+        const resultado = await response.json();
+        console.log('Pedido enviado com sucesso:', resultado);
+        return resultado;
+
+      } catch (error) {
+        console.error('Falha na requisição POST do pedido:', error);
+        alert('Ocorreu um erro ao finalizar o pedido. Por favor, tente novamente. Detalhes no console.');
+        return null;
+      }
+    }
+    // ----------------------------------------------------
+
+    btnEnviar.addEventListener('click', async () => { // Adicionado 'async' aqui
+      // 0. VERIFICAÇÃO DE LOGIN
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Você precisa estar logado para continuar ao pagamento. Redirecionando para o login.');
+        window.location.href = './login.html'; // Redireciona para a página de login
+        return;
+      }
       const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
       if (carrinho.length === 0) {
         alert('Seu carrinho está vazio!');
@@ -133,7 +184,9 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
       const formaSelecionada = document.querySelector('input[name="pagamento"]:checked')?.value;
       let dadosValidos = true;
       let mensagemAlerta = '';
+      let dadosPagamentoColetados = {}; // Objeto para armazenar os dados de pagamento
 
+      // Coleta de dados de pagamento e validação
       if (formaSelecionada === 'Pix') {
         const nome = document.getElementById('nomePix')?.value.trim();
         const chave = document.getElementById('chavePix')?.value.trim();
@@ -141,6 +194,7 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
           dadosValidos = false;
           alert('Preencha os dados do Pix corretamente!');
         } else {
+          dadosPagamentoColetados = { nome, chave };
           mensagemAlerta = `Pedido enviado via Pix!\nNome: ${nome}\nChave Pix: ${chave}\nCEP: ${cep}`;
         }
       } else if (formaSelecionada === 'Cartão') {
@@ -155,7 +209,9 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
           dadosValidos = false;
           alert('Preencha todos os dados do cartão!');
         } else {
-        
+          // Nota: Em um ambiente real, NUNCA envie dados sensíveis de cartão para o frontend.
+          // Aqui, estamos apenas coletando para simular o envio.
+          dadosPagamentoColetados = { nome, email, cpf, numero, validade, cvv };
           mensagemAlerta = `Pedido enviado com Cartão de Crédito!\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nCEP: ${cep}`;
         }
       } else if (formaSelecionada === 'Boleto') {
@@ -166,6 +222,7 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
           dadosValidos = false;
           alert('Preencha os dados para o Boleto!');
         } else {
+          dadosPagamentoColetados = { nome, email, cpf };
           mensagemAlerta = `Pedido gerado via Boleto!\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nCEP: ${cep}\nEnviaremos o código para seu e-mail.`;
         }
       } else if (formaSelecionada === 'Cartão de Débito') {
@@ -176,22 +233,65 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
           dadosValidos = false;
           alert('Preencha os dados para o Cartão de Débito!');
         } else {
+          dadosPagamentoColetados = { nome, email, cpf };
           mensagemAlerta = `Pedido enviado com Cartão de Débito!\nNome: ${nome}\nEmail: ${email}\nCPF: ${cpf}\nCEP: ${cep}`;
         }
       }
 
       if (dadosValidos) {
-        alert(mensagemAlerta);
-       
-        console.log('Dados do pedido:', {
-          carrinho: carrinho,
-          cep: cep,
-          formaPagamento: formaSelecionada,
-          
-        });
+        // 1. Estruturar os dados do pedido
+        const totalTexto = totalSpan.textContent.replace('R$ ', '').replace(',', '.');
+        let sub_total = parseFloat(totalTexto);
+        
+        // Garante que o sub_total é um número válido, caso contrário, usa 0
+        if (isNaN(sub_total)) {
+            sub_total = 0;
+        }
 
-        localStorage.removeItem('carrinho');
-        window.location.href = '../index.html'; 
+        // 1. Estruturar os dados do pedido
+        const usuarioLogadoString = localStorage.getItem('usuarioLogado');
+        const usuarioLogado = usuarioLogadoString && usuarioLogadoString !== 'undefined' ? JSON.parse(usuarioLogadoString) : null;
+        
+        // O objeto do usuário tem a propriedade 'id' ou 'userId'?
+        const usuario_id = usuarioLogado ? Number(usuarioLogado.id || usuarioLogado.userId) : null; // Tenta 'id' e 'userId'
+
+        console.log('DEBUG: usuarioLogado:', usuarioLogado);
+        console.log('DEBUG: usuario_id:', usuario_id);
+
+        // VERIFICAÇÃO ADICIONAL: Se o usuario_id ainda for nulo, interrompe e alerta.
+        if (!usuario_id) {
+            alert('Erro: Não foi possível identificar o usuário logado. Por favor, faça login novamente.');
+            return;
+        }
+
+        const dadosDoPedido = {
+          usuario_id: usuario_id, // Adiciona o ID do usuário
+          sub_total: sub_total,
+          forma_pagamento: formaSelecionada, // O backend espera 'forma_pagamento', não 'formaPagamento'.
+          // O backend não usa 'cep' ou 'dadosPagamento' diretamente no objeto principal, mas vamos mantê-los para referência, se necessário.
+          cep: cep,
+          dadosPagamento: dadosPagamentoColetados, 
+          
+          // O backend espera 'itens', não 'PedidoProdutos'.
+          itens: carrinho.map(item => ({
+            // O backend espera 'produto_id' e 'preco_unitario'
+            produto_id: item.id || item.produto_id || 1, // Assumindo que o ID do produto está em 'item.id' ou 'item.produto_id'. Usando 1 como fallback para evitar erro de validação.
+            quantidade: item.quantidade,
+            preco_unitario: item.preco, // Assumindo que 'item.preco' é o preço unitário
+            // O backend também usa 'forma_pagamento' no itemPedido, mas vamos deixar o backend lidar com isso.
+          })),
+        };
+
+        // 2. Enviar para a API
+        const resultadoEnvio = await enviarPedidoParaAPI(dadosDoPedido);
+
+        if (resultadoEnvio) {
+          alert(mensagemAlerta);
+          
+          // 3. Limpar e redirecionar apenas se o envio for bem-sucedido
+          localStorage.removeItem('carrinho');
+          window.location.href = '../index.html'; 
+        }
       }
     });
 
