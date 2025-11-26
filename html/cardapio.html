@@ -183,7 +183,23 @@
             <div class="rodape">
                 <span class="numero">Cardapio</span>
             </div>
+            
+            <!-- Área de Autenticação -->
+            <div id="auth-area" class="auth-area" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+                <div id="auth-links" class="auth-links" style="display: none;">
+                    <a href="./login.html" class="auth-link">Entrar</a>
+                    <span class="auth-separator">|</span>
+                    <a href="./login.html" class="auth-link">Registrar</a>
+                </div>
+                
+                <div id="user-info" class="user-info" style="display: none;">
+                    <span class="user-greeting">Olá, <span id="user-name"></span></span>
+                    <button id="logout-btn" class="logout-btn">Sair</button>
+                </div>
+            </div>
         </div>
+        
+    <script src="../js/auth.js"></script>
 
 </body>
 

@@ -170,3 +170,78 @@ button:hover {
 .hidden {
   display: none;
 }
+/* Estilos para área de autenticação no header */
+.auth-area {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+}
+
+.auth-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.auth-link {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.3s, color 0.3s;
+}
+
+.auth-link:hover {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.auth-separator {
+    color: #ffffff;
+    font-size: 16px;
+    margin: 0 4px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-greeting {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.user-greeting #user-name {
+    color: #ffd54f;
+    font-weight: 700;
+}
+
+.logout-btn {
+    background-color: #a93226;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: #8b2820;
+    transform: scale(1.05);
+}
+
+/* Responsividade para área de autenticação */
+@media (max-width: 900px) {
+    .auth-area {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+}

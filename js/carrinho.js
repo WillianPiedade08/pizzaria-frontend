@@ -1,3 +1,19 @@
+// Função auxiliar para decodificar o payload de um JWT (copiada do auth.js)
+function decodeJwt(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        return JSON.parse(jsonPayload);
+    } catch (e) {
+        console.error("Erro ao decodificar JWT no carrinho.js:", e);
+        return null;
+    }
+}
+
 fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
   .then(response => {
     if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
@@ -45,6 +61,8 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
           <img src="${produto.imagem || 'placeholder.png'}" alt="${produto.nome || 'Produto sem nome'}" />
           <div class="info">
             <h3>${produto.nome || 'Produto sem nome'}</h3>
+            <p>ID: ${produto.id}</p>
+            <p>Chave Única: ${produto.chaveUnica}</p> <!-- Adicionando a chave única para debug visual -->
             <p>Preço: R$ ${precoValido.toFixed(2).replace('.', ',')}</p>
             <label>Qtd:
               <input type="number" min="0" value="${quantidadeValida}" data-index="${index}" />
@@ -121,10 +139,13 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
       const API_URL = 'https://api-pizzas-seu-ze.vercel.app/pedidos'; 
       
       try {
+        const token = localStorage.getItem('token'); // Pega o token para autenticação
+        
         const response = await fetch(API_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Adiciona o token de autenticação
           },
           body: JSON.stringify(dadosDoPedido),
         });
@@ -166,6 +187,18 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
         alert('Você precisa estar logado para continuar ao pagamento. Redirecionando para o login.');
         window.location.href = './login.html'; // Redireciona para a página de login
         return;
+      }
+      
+      // Decodificar o token para obter o ID do usuário
+      const payload = decodeJwt(token);
+      const usuario_id = payload ? payload.id : null;
+
+      if (!usuario_id) {
+          alert('Erro: Não foi possível identificar o usuário logado. Por favor, faça login novamente.');
+          localStorage.removeItem('token');
+          localStorage.removeItem('usuarioLogado');
+          window.location.href = './login.html';
+          return;
       }
       const carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
       if (carrinho.length === 0) {
@@ -249,20 +282,11 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
         }
 
         // 1. Estruturar os dados do pedido
-        const usuarioLogadoString = localStorage.getItem('usuarioLogado');
-        const usuarioLogado = usuarioLogadoString && usuarioLogadoString !== 'undefined' ? JSON.parse(usuarioLogadoString) : null;
         
-        // O objeto do usuário tem a propriedade 'id' ou 'userId'?
-        const usuario_id = usuarioLogado ? Number(usuarioLogado.id || usuarioLogado.userId) : null; // Tenta 'id' e 'userId'
+        // O ID do usuário já foi obtido na verificação de login
+        // const usuario_id = ...
 
-        console.log('DEBUG: usuarioLogado:', usuarioLogado);
         console.log('DEBUG: usuario_id:', usuario_id);
-
-        // VERIFICAÇÃO ADICIONAL: Se o usuario_id ainda for nulo, interrompe e alerta.
-        if (!usuario_id) {
-            alert('Erro: Não foi possível identificar o usuário logado. Por favor, faça login novamente.');
-            return;
-        }
 
         const dadosDoPedido = {
           usuario_id: usuario_id, // Adiciona o ID do usuário

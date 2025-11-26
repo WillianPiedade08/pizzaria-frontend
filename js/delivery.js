@@ -8,7 +8,7 @@ async function carregarProdutos() {
 
         produtos.forEach(produto => {
 
-            const id = produto.produto_id;
+            const id = produto.produto_id; // ID do produto para o carrinho
             const nome = produto.nome || "Sem nome";
             const descricao = produto.descricao || "";
             const preco = Number(produto.preco) || 0;
@@ -38,11 +38,12 @@ async function carregarProdutos() {
             // Evento do botão
             card.querySelector(".btn-adicionar").onclick = () => {
                 adicionarAoCarrinho({
-                    id,
+                    id: id, // ID original do produto (para envio à API)
                     nome,
                     preco,
                     imagem,
-                    quantidade: 1
+                    quantidade: 1,
+                    chaveUnica: `${id}-${nome}` // Chave única para identificação no carrinho
                 });
             };
 
@@ -57,7 +58,13 @@ async function carregarProdutos() {
 function adicionarAoCarrinho(produto) {
     let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-    const existente = carrinho.find(p => p.id == produto.id);
+    // A comparação deve ser estrita (===) se os IDs forem do mesmo tipo (number ou string)
+    // Se a API retorna o ID como string e o JS como number, '==' funciona, mas '===' é mais seguro.
+    // Vamos manter '==' por enquanto, mas garantir que o ID do produto seja o 'produto_id' da API.
+    // A chave de identificação única é a combinação do ID do produto e do nome.
+    // Isso contorna o problema de IDs duplicados vindos da API.
+    const chaveUnica = `${produto.id}-${produto.nome}`;
+    const existente = carrinho.find(p => p.chaveUnica === chaveUnica);
 
     if (existente) {
         existente.quantidade++;

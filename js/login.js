@@ -144,14 +144,16 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("📥 Resposta do servidor:", data);
 
             if (response.ok) {
-                // Salva token e dados do usuário no localStorage
+                // Salva apenas o token no localStorage. Os dados do usuário serão extraídos do token.
                 localStorage.setItem('token', data.token);
-                // CORREÇÃO: Usar 'data.usertechman' para o objeto do usuário, conforme o localStorage
-                if (data.usertechman) {
-                    localStorage.setItem('usuarioLogado', JSON.stringify(data.usertechman));
-                } else {
-                    console.warn("Usuário logado, mas objeto 'data.usertechman' não encontrado na resposta da API.");
-                }
+                // O objeto 'usuarioLogado' não é mais necessário, pois os dados serão decodificados do token.
+                // No entanto, para compatibilidade com o carrinho.js, vamos salvar o ID do usuário se ele estiver no token.
+                // O auth.js agora tem a função de decodificar o token.
+                
+                // O objeto 'data' da API não contém o nome, apenas o token.
+                // O token contém o ID, email e tipo.
+                // Vamos salvar o objeto de resposta completo para o carrinho.js usar o 'tipo' se precisar.
+                localStorage.setItem('usuarioLogado', JSON.stringify(data));
 
                 alert('✅ Login bem-sucedido!');
                 // Redireciona para a página principal (index.html)
