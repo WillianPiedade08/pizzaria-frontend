@@ -3,11 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 :root {
-    --primary-color: #4B70E2;
-    --secondary-color: #333;
-    --background-color: #f0f2f5;
-    --card-background: #ffffff;
-    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --primary-color: #ffd900;        /* amarelo */
+    --secondary-color: #f1f1f1;      /* texto claro */
+    --background-color: #000000;     /* fundo preto */
+    --card-background: #111111;      /* card preto suave */
+    --shadow-light: 0 4px 12px rgba(255, 217, 0, 0.2); /* amarelo com glow */
 }
 
 * {
@@ -19,11 +19,37 @@
 body {
     background-color: var(--background-color);
     display: flex;
+    flex-direction: column; /* <<<<< necessário para a logo ficar acima do card */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     font-family: 'Inter', sans-serif;
     color: var(--secondary-color);
+}
+
+/* 🟡 LOGO EM CIMA DO CARD */
+.logo-container {
+    text-align: center;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-icon {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(255, 217, 0, 0.4));
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 8px;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 /* CARD */
@@ -56,7 +82,7 @@ body {
 
 .form-subtitle {
     font-size: 14px;
-    color: #777;
+    color: #ccc;
     margin-bottom: 25px;
 }
 
@@ -77,9 +103,11 @@ body {
 .input-group input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     border-radius: 6px;
     font-size: 16px;
+    background: #000;
+    color: #fff;
     transition: border-color 0.3s ease;
 }
 
@@ -105,23 +133,23 @@ body {
     border: none;
     border-radius: 6px;
     background-color: var(--primary-color);
-    color: var(--card-background);
+    color: var(--background-color);
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: opacity 0.3s ease;
     margin-top: 20px;
 }
 
 .submit-btn:hover {
-    background-color: #3a5ed1;
+    opacity: 0.85;
 }
 
 /* TROCA LOGIN / CADASTRO */
 .switch-text {
     margin-top: 20px;
     font-size: 14px;
-    color: #777;
+    color: #ccc;
 }
 
 .switch-text a {
