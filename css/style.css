@@ -1,311 +1,234 @@
+/* ==================
+   RESET & VARIÁVEIS
+================== */
+:root{
+  --cor-primaria: #ffd900;
+  --cor-secundaria: #241e1e;
+  --header-height: 80px;
+}
+
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+}
+
+/* ==================
+        BODY
+================== */
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    background-size: cover;
-    background-color: #fff8f0;
-    background-image: url('../img/ez.jpg');
-    color: #4e403d2d;
-    line-height: 1.6;
-    min-height: 100vh;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background-size: cover;
+  background-attachment: fixed;
+  background-color: #fff8f0;
+  background-image: url('../img/ez.jpg');
+  color: #4e403d;
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  width: 100%;
 }
 
-/* ---------------- HEADER ---------------- */
-
+/* ==================
+       HEADER
+================== */
 .containerheader {
-    background-color: #241e1e;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
+  background-color: var(--cor-secundaria);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  position: fixed;
+  inset: 0 0 auto 0;
+  width: 100%;
+  z-index: 100;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .containerLogo img {
-    width: 120px;
-    height: auto;
-    margin-right: 40px;
+  width: 140px;
+  max-width: 40vw;
+  height: auto;
 }
 
+/* MENU */
 .containerMenu {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.containerMenu nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
 }
 
 .containerMenu nav a {
-    color: #ffffff;
-    font-size: 18px;
-    font-weight: 700;
-    text-decoration: none;
-    margin: 0 25px;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background 0.3s, color 0.3s;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  margin: 0 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: .3s;
+  white-space: nowrap;
 }
 
 .containerMenu nav a:hover,
 .containerMenu nav a.active {
-    color: #000000;
-    background-color: #ffffff;
+  background-color: #ffffff;
+  color: #000;
 }
 
-/* ---------------- HERO SECTION ---------------- */
-
+/* ==================
+     FIRST SECTION
+================== */
 .first-section {
-    min-height: 100vh;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .first-section h1 {
-    color: #000000;
-    font-size: 4rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 0 #ffd54f, -2px -2px 0 #ffd54f, 2px -2px 0 #ffd54f, -2px 2px 0 #ffd54f;
+  color: #000;
+  font-size: 4rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 0 #ffd54f, -2px -2px 0 #ffd54f;
+  word-wrap: break-word;
 }
 
 .first-section h2 {
-    color: #ffd54f;
-    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+  color: #ffd54f;
+  text-shadow: 2px 2px 0 #000;
 }
 
-h1, h2, h3 {
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 2px;
-}
-
-/* ---------------- BUTTONS ---------------- */
-
+/* ==================
+       BOTÕES
+================== */
 .btn {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 2rem;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
 .btn button {
-    background-color: #ffd900;
-    color: #000000;
-    border-radius: 10px;
-    font-weight: 700;
-    border: none;
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 400ms ease-in;
+  background-color: var(--cor-primaria);
+  color: #000;
+  border-radius: 10px;
+  font-weight: 700;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: .4s;
 }
 
 .btn button:hover {
-    background-color: #ffffff;
-    color: #000000;
-    border: 1px solid #000000;
+  background-color: #fff;
+  border: 1px solid #000;
 }
 
-/* ---------------- CARDÁPIO ---------------- */
-
-.recentes {
-    background-color: #fffde7;
-    color: #a93226;
-    padding: 40px 0;
-    text-align: center;
-}
-
-.recentes h2 {
-    color: #a93226;
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-}
-
+/* ==================
+      CARDÁPIO
+================== */
 .itens-cardapio {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 .itens-cardapio .info {
-    width: 100%;
-    max-width: 900px;
-    margin-bottom: 0;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    background-color: #fff8f0;
-    color: #3e2723;
-    border-radius: 10px;
+  width: 100%;
+  max-width: 900px;
+  background: #fff8f0;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .itens-cardapio .info img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 12px;
+  width: 100%;
+  border-radius: 8px;
+  display: block;
 }
 
 .itens-cardapio .info h3 {
-    color: #a93226;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  color: #a93226;
 }
 
-.itens-cardapio .info .pedir {
-    background-color: #a93226;
-    color: #fffde7;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 24px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s, color 0.3s;
-}
+/* ==================
+  RESPONSIVIDADE REAL
+================== */
 
-.itens-cardapio .info .pedir:hover {
-    background-color: #ffd54f;
-    color: #a93226;
-}
-
-/* ---------------- CONTATOS ---------------- */
-
-.contatos {
-    background-color: #a93226;
-    color: #fffde7;
-    padding: 40px 0;
-    text-align: center;
-}
-
-.contatos h3 {
-    color: #ffd54f;
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-/* ---------------- ÁREA DE AUTENTICAÇÃO ---------------- */
-
-.auth-area {
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-}
-
-.auth-links {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.auth-link {
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    transition: background 0.3s, color 0.3s;
-}
-
-.auth-link:hover {
-    color: #000000;
-    background-color: #ffffff;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* ---------------- RESPONSIVIDADE REAL ---------------- */
-
-/* tablet */
+/* TABLET */
 @media (max-width: 900px) {
+  :root { --header-height: 120px; }
 
-    .containerheader {
-        flex-direction: column;
-        padding: 10px 20px;
-        gap: 15px;
-    }
+  .containerheader {
+    flex-direction: column;
+  }
 
-    .containerMenu nav a {
-        font-size: 15px;
-        margin: 0 10px;
-    }
-
-    .btn {
-        flex-direction: column;
-        width: 100%;
-        padding: 0 20px;
-    }
+  .containerMenu nav a {
+    font-size: 15px;
+    margin: 0 8px;
+  }
 }
 
-/* celular grande */
+/* CELULAR */
 @media (max-width: 600px) {
+  :root { --header-height: 140px; }
 
-    .containerLogo img {
-        width: 90px;
-    }
+  .containerLogo img { width: 90px; }
 
-    .first-section h1 {
-        font-size: 2.3rem;
-    }
+  .first-section h1 { font-size: 2.3rem; }
+  .first-section h2 { font-size: 1.2rem; }
 
-    .first-section h2 {
-        font-size: 1.2rem;
-    }
-
-    .containerMenu {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 5px;
-    }
-
-    .containerMenu nav a {
-        font-size: 14px;
-        margin: 0 5px;
-    }
-
-    .itens-cardapio .info {
-        max-width: 95%;
-    }
-
-    .btn button {
-        width: 100%;
-    }
+  .containerMenu nav a {
+    font-size: 14px;
+    padding: 6px 8px;
+    margin: 0 6px;
+  }
 }
 
-/* celular pequeno */
-@media (max-width: 420px) {
+/* CARDÁPIO AJUSTADO */
+@media (max-width: 850px) {
+  .itens-cardapio {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 
-    .first-section h1 {
-        font-size: 1.8rem;
-    }
-
-    .first-section h2 {
-        font-size: 1rem;
-    }
-
-    .containerMenu nav a {
-        font-size: 12px;
-        padding: 6px 8px;
-    }
-
-    .auth-link {
-        font-size: 13px;
-        padding: 5px 8px;
-    }
+  .itens-cardapio .info {
+    max-width: 45%;
+  }
 }
+
+@media (max-width: 500px) {
+  .itens-cardapio {
+    flex-direction: column;
+  }
+
+  .itens-cardapio .info {
+    max-width: 95%;
+  }
+}
+
+/* BARRA SCROLL MENU */
+.containerMenu nav::-webkit-scrollbar { height: 6px; }
+.containerMenu nav::-webkit-scrollbar-thumb { background: rgba(0,0,0,.25); }
