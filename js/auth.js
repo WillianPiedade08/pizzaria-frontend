@@ -16,6 +16,34 @@ function decodeJwt(token) {
     }
 }
 
+// URL base da sua API
+const API_BASE_URL = 'https://api-pizzas-seu-ze.vercel.app/usuarios';
+
+// Função para buscar os dados do usuário na API
+async function fetchUserData(token) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/user/profile`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            // Se a resposta não for OK (ex: 401 Unauthorized), lança um erro
+            throw new Error(`Erro ao buscar dados do usuário: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.user; // Assumindo que a API retorna um objeto { user: { nome, email, ... } }
+
+    } catch (error) {
+        console.error("Falha na requisição de dados do usuário:", error);
+        return null;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const authLinks = document.getElementById('auth-links');
     const userInfo = document.getElementById('user-info');
@@ -23,15 +51,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
 
     // Função para verificar se o usuário está logado
-    function checkAuthStatus() {
+    async function checkAuthStatus() {
         const token = localStorage.getItem('token');
+        const cachedUser = localStorage.getItem('usuarioLogado');
 
         if (token) {
             const payload = decodeJwt(token);
             
             if (payload && payload.email) {
-                // Usuário está logado. O nome será o email (ou parte dele)
-                mostrarUsuarioLogado(payload);
+                // 1. Tenta usar dados em cache
+                if (cachedUser) {
+                    const user = JSON.parse(cachedUser);
+                    mostrarUsuarioLogado(user.nome || user.email);
+                    return;
+                }
+
+                // 2. Se não houver cache, busca na API
+                const userData = await fetchUserData(token);
+
+                if (userData && (userData.nome || userData.email)) {
+                    // Armazena os dados completos do usuário no cache
+                    localStorage.setItem('usuarioLogado', JSON.stringify(userData));
+                    mostrarUsuarioLogado(userData.nome || userData.email);
+                } else {
+                    // Falha ao buscar dados, trata como token inválido
+                    console.warn("Token válido, mas falha ao obter dados do usuário. Limpando sessão.");
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('usuarioLogado');
+                    mostrarLinksAuth();
+                }
             } else {
                 // Token inválido ou expirado
                 localStorage.removeItem('token');
@@ -45,13 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mostrar informações do usuário logado
-    function mostrarUsuarioLogado(payload) {
+    function mostrarUsuarioLogado(nomeDisplay) {
         if (authLinks) authLinks.style.display = 'none';
         if (userInfo) {
             userInfo.style.display = 'flex';
             if (userName) {
-                // Pega a parte do email antes do @ para usar como "nome"
-                const nomeDisplay = payload.email.split('@')[0];
+                // Usa o nome completo ou email retornado pela API
                 userName.textContent = nomeDisplay;
             }
         }
@@ -90,3 +137,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verifica o status de autenticação ao carregar a página
     checkAuthStatus();
 });
+
+
