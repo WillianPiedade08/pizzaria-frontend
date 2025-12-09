@@ -19,6 +19,7 @@ body {
     font-family: 'Arial', sans-serif;
     background-image: url(../img/ez.jpg);
     background-size: cover;
+    background-position: center;
     color: var(--cor-texto);
     line-height: 1.6;
     min-height: 100vh;
@@ -28,22 +29,21 @@ body {
 header {
     background-color: var(--cor-secundaria);
     color: var(--cor-primaria);
-    padding: 1.5rem 1rem;
-    text-align: center;
+    padding: 1rem 1rem;
     position: relative;
     box-shadow: var(--sombra-leve);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 header h1 {
     margin: 0;
-    font-size: 2rem;
+    font-size: 1.6rem;
 }
 
 header button {
-    position: absolute;
-    left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
     background: var(--cor-primaria);
     color: var(--cor-secundaria);
     border: none;
@@ -105,16 +105,19 @@ main {
     object-fit: cover;
     border-radius: 4px;
     border: 1px solid var(--cor-borda);
+    flex-shrink: 0;
 }
 
 .item-carrinho .info {
     flex-grow: 1;
+    min-width: 0;
 }
 
 .item-carrinho .info h3 {
     margin: 0 0 0.2rem 0;
     font-size: 1.1rem;
     color: var(--cor-secundaria);
+    word-wrap: break-word;
 }
 
 .item-carrinho .info p {
@@ -144,7 +147,7 @@ main {
     border-radius: 8px;
     box-shadow: var(--sombra-leve);
     position: sticky;
-    top: 2rem; /* Para fixar na tela ao rolar */
+    top: 2rem; /* Para fixar na tela ao rolar em desktop */
 }
 
 #resumo h2 {
@@ -218,31 +221,6 @@ main {
     transform: translateY(-1px);
 }
 
-/* Responsividade */
-@media (max-width: 900px) {
-    main {
-        flex-direction: column;
-        margin: 1rem;
-    }
-
-    #resumo {
-        position: static;
-        width: 100%;
-    }
-
-    #carrinho-container {
-        width: 100%;
-    }
-}
-
-@media (max-width: 600px) {
-    header button {
-        position: static;
-        transform: none;
-        margin-top: 0.5rem;
-    }
-}
-
 /* Estilos para área de autenticação */
 .auth-area {
     position: absolute;
@@ -251,6 +229,7 @@ main {
     transform: translateY(-50%);
     display: flex;
     align-items: center;
+    gap: 8px;
 }
 
 .auth-links {
@@ -311,4 +290,98 @@ main {
 .logout-btn:hover {
     background-color: #8b2820;
     transform: scale(1.05);
+}
+
+/* Responsividade geral */
+@media (max-width: 900px) {
+    main {
+        flex-direction: column;
+        margin: 1rem;
+    }
+
+    #resumo {
+        position: static;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    #carrinho-container {
+        width: 100%;
+    }
+
+    /* Ajusta a área de autenticação para ficar estática no header */
+    .auth-area {
+        position: static;
+        transform: none;
+        margin-left: auto;
+        gap: 6px;
+    }
+
+    /* Mais espaço entre elementos do cabeçalho em telas médias */
+    header h1 { font-size: 1.4rem; }
+}
+
+/* Layout para telas pequenas */
+@media (max-width: 700px) {
+    .item-carrinho {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .item-carrinho img {
+        width: 100%;
+        height: auto;
+        max-height: 220px;
+        border-radius: 6px;
+    }
+
+    .item-carrinho .info {
+        width: 100%;
+    }
+
+    .item-carrinho .info h3 { font-size: 1rem; }
+
+    #resumo {
+        position: static;
+        order: 2;
+    }
+
+    #carrinho-container {
+        order: 1;
+    }
+
+    /* Auth area empilhada se necessário */
+    .auth-links { gap: 6px; flex-wrap: wrap; }
+    .user-info { gap: 6px; }
+}
+
+/* Ajustes para celulares estreitos */
+@media (max-width: 420px) {
+    header {
+        padding: 0.75rem 0.75rem;
+    }
+
+    header h1 {
+        font-size: 1.05rem;
+    }
+
+    .item-carrinho img {
+        max-height: 180px;
+    }
+
+    .auth-link { padding: 6px 8px; font-size: 13px; }
+    .logout-btn { padding: 6px 10px; font-size: 12px; }
+
+    #enviar-pedido { padding: 0.85rem; font-size: 1rem; }
+}
+
+/* pequenas melhorias de acessibilidade */
+button, a.button {
+    transition: transform 0.12s ease, box-shadow 0.12s;
+}
+
+button:focus, .auth-link:focus, .logout-btn:focus {
+    outline: 3px solid rgba(255,197,6,0.25);
+    outline-offset: 2px;
 }

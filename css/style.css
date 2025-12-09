@@ -14,6 +14,8 @@ body {
     min-height: 100vh;
 }
 
+/* ---------------- HEADER ---------------- */
+
 .containerheader {
     background-color: #241e1e;
     display: flex;
@@ -56,6 +58,8 @@ body {
     background-color: #ffffff;
 }
 
+/* ---------------- HERO SECTION ---------------- */
+
 .first-section {
     min-height: 100vh;
     background-size: cover;
@@ -73,22 +77,19 @@ body {
     font-weight: 700;
     margin-bottom: 0.5rem;
     text-shadow: 2px 2px 0 #ffd54f, -2px -2px 0 #ffd54f, 2px -2px 0 #ffd54f, -2px 2px 0 #ffd54f;
-    /* contorno amarelo */
 }
 
 .first-section h2 {
     color: #ffd54f;
     text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
-    /* contorno preto */
 }
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
     font-family: 'Montserrat', sans-serif;
     letter-spacing: 2px;
 }
 
+/* ---------------- BUTTONS ---------------- */
 
 .btn {
     display: flex;
@@ -114,6 +115,8 @@ h3 {
     color: #000000;
     border: 1px solid #000000;
 }
+
+/* ---------------- CARDÁPIO ---------------- */
 
 .recentes {
     background-color: #fffde7;
@@ -142,33 +145,22 @@ h3 {
     margin-bottom: 0;
     padding: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    background-color: #fff8f0;
+    color: #3e2723;
+    border-radius: 10px;
 }
-
 
 .itens-cardapio .info img {
     width: 100%;
     height: auto;
-    display: block;
     border-radius: 8px;
     margin-bottom: 12px;
-}
-
-.itens-cardapio .info {
-    background-color: #fff8f0;
-    color: #3e2723;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
 }
 
 .itens-cardapio .info h3 {
     color: #a93226;
     font-size: 1.5rem;
     margin-bottom: 1rem;
-}
-
-.itens-cardapio .info h4 span {
-    color: #ffd54f;
 }
 
 .itens-cardapio .info .pedir {
@@ -188,6 +180,8 @@ h3 {
     color: #a93226;
 }
 
+/* ---------------- CONTATOS ---------------- */
+
 .contatos {
     background-color: #a93226;
     color: #fffde7;
@@ -201,43 +195,8 @@ h3 {
     margin-bottom: 1.5rem;
 }
 
-.contatos-secao a {
-    color: #fffde7;
-    text-decoration: none;
-    transition: color 0.3s;
-}
+/* ---------------- ÁREA DE AUTENTICAÇÃO ---------------- */
 
-.contatos-secao a:hover {
-    color: #ffd54f;
-}
-
-/* Responsividade */
-@media (max-width: 900px) {
-    .containerheader {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .btn {
-        flex-direction: column;
-        gap: 12px;
-    }
-}
-
-@media (max-width: 600px) {
-    .first-section h1 {
-        font-size: 2.2rem;
-    }
-
-    .first-section h2 {
-        font-size: 1.3rem;
-    }
-
-    .containerLogo img {
-        width: 80px;
-    }
-}
-/* Estilos para área de autenticação no header */
 .auth-area {
     display: flex;
     align-items: center;
@@ -265,50 +224,88 @@ h3 {
     background-color: #ffffff;
 }
 
-.auth-separator {
-    color: #ffffff;
-    font-size: 16px;
-    margin: 0 4px;
-}
-
 .user-info {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.user-greeting {
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 600;
-}
+/* ---------------- RESPONSIVIDADE REAL ---------------- */
 
-.user-greeting #user-name {
-    color: #ffd54f;
-    font-weight: 700;
-}
-
-.logout-btn {
-    background-color: #a93226;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.logout-btn:hover {
-    background-color: #8b2820;
-    transform: scale(1.05);
-}
-
-/* Responsividade para área de autenticação */
+/* tablet */
 @media (max-width: 900px) {
-    .auth-area {
-        margin-left: 0;
-        margin-top: 10px;
+
+    .containerheader {
+        flex-direction: column;
+        padding: 10px 20px;
+        gap: 15px;
+    }
+
+    .containerMenu nav a {
+        font-size: 15px;
+        margin: 0 10px;
+    }
+
+    .btn {
+        flex-direction: column;
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+/* celular grande */
+@media (max-width: 600px) {
+
+    .containerLogo img {
+        width: 90px;
+    }
+
+    .first-section h1 {
+        font-size: 2.3rem;
+    }
+
+    .first-section h2 {
+        font-size: 1.2rem;
+    }
+
+    .containerMenu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .containerMenu nav a {
+        font-size: 14px;
+        margin: 0 5px;
+    }
+
+    .itens-cardapio .info {
+        max-width: 95%;
+    }
+
+    .btn button {
+        width: 100%;
+    }
+}
+
+/* celular pequeno */
+@media (max-width: 420px) {
+
+    .first-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .first-section h2 {
+        font-size: 1rem;
+    }
+
+    .containerMenu nav a {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+
+    .auth-link {
+        font-size: 13px;
+        padding: 5px 8px;
     }
 }

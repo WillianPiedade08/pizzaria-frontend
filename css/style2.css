@@ -9,8 +9,9 @@ body {
     background-color: #222;
     color: #fff;
     min-height: 100vh;
-    margin: 0;
 }
+
+/* ================= HEADER ================= */
 
 header {
     width: 100%;
@@ -23,11 +24,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 12px 24px;
-}
-
-.containerLogo {
-    display: flex;
-    align-items: center;
+    flex-wrap: wrap;
 }
 
 .containerLogo img {
@@ -38,6 +35,7 @@ header {
 .containerMenu nav {
     display: flex;
     gap: 18px;
+    flex-wrap: wrap;
 }
 
 .containerMenu nav a {
@@ -56,42 +54,47 @@ header {
     color: #111;
 }
 
+/* ================= CONTAINER ================= */
 
 .container {
     background-color: #111;
-    padding: 48px 40px 40px 40px; 
+    padding: 48px 40px;
     border-radius: 12px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    max-width: 1200px; 
-    margin: 48px auto 0 auto;
+    max-width: 1200px;
+    margin: 48px auto;
     font-size: 1.18rem;
 }
 
 .container > .containerLogo {
+    display: flex;
     justify-content: center;
     margin-bottom: 10px;
 }
+
+/* ================= TÍTULO ================= */
 
 h1 {
     text-align: center;
     margin-bottom: 36px;
     color: #FFC107;
-    font-size: 3rem; 
+    font-size: 3rem;
     letter-spacing: 2px;
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
+
+/* ================= TABELA ================= */
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 24px;
     background: transparent;
-    font-size: 1.08rem; 
+    font-size: 1.08rem;
 }
 
 th, td {
-    padding: 16px 12px; 
+    padding: 16px 12px;
     text-align: left;
     border-bottom: 1px solid #333;
 }
@@ -103,11 +106,6 @@ th {
     text-align: center;
 }
 
-th:first-child,
-td:first-child {
-    text-align: left;
-}
-
 .pizza-name {
     font-weight: bold;
     color: #FFC107;
@@ -117,12 +115,13 @@ td:first-child {
 
 .preco {
     text-align: right;
-    min-width: 70px;
 }
 
 .tamanho {
     text-align: center;
 }
+
+/* ================= RODAPÉ ================= */
 
 .rodape {
     text-align: center;
@@ -135,50 +134,13 @@ td:first-child {
     color: #FFC107;
 }
 
-@media (max-width: 1000px) {
-    .container {
-        max-width: 98vw;
-        padding: 18px 4vw 18px 4vw;
-    }
-    .containerheader {
-        flex-direction: column;
-        gap: 10px;
-        align-items: flex-start;
-    }
-    .containerMenu nav {
-        gap: 10px;
-    }
-}
+/* ================= AUTH AREA ================= */
 
-@media (max-width: 600px) {
-    .container {
-        padding: 10px 2vw 10px 2vw;
-    }
-    h1 {
-        font-size: 1.3rem;
-    }
-    .containerLogo img {
-        width: 60px;
-    }
-    th, td {
-        padding: 6px 2px;
-        font-size: 0.95rem;
-    }
-    .pizza-name {
-        font-size: 1rem;
-    }
-
-    table, thead, tbody, th, td, tr {
-        font-size: 0.95rem;
-        display: block;
-    }
-}
-/* Estilos para área de autenticação */
 .auth-area {
     background-color: rgba(36, 30, 30, 0.9);
     padding: 12px 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 .auth-links {
@@ -202,42 +164,101 @@ td:first-child {
     background-color: #ffffff;
 }
 
-.auth-separator {
-    color: #ffffff;
-    font-size: 16px;
-    margin: 0 4px;
-}
-
 .user-info {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.user-greeting {
-    color: #ffffff;
-    font-size: 16px;
-    font-weight: 600;
+/* ================= MEDIA QUERIES ================= */
+
+/* Tablet */
+@media (max-width: 1000px) {
+    .container {
+        max-width: 95vw;
+        padding: 28px 20px;
+    }
+
+    .containerheader {
+        justify-content: center;
+        gap: 15px;
+    }
 }
 
-.user-greeting #user-name {
-    color: #ffd54f;
-    font-weight: 700;
+/* Celular grande */
+@media (max-width: 700px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .containerMenu nav {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .containerLogo img {
+        width: 70px;
+    }
+
+    table {
+        font-size: 1rem;
+    }
 }
 
-.logout-btn {
-    background-color: #a93226;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 16px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+/* Celular responsivo de verdade -> TABELA vira LISTA */
+@media (max-width: 550px) {
 
-.logout-btn:hover {
-    background-color: #8b2820;
-    transform: scale(1.05);
+    .container {
+        padding: 18px 12px;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 18px;
+        background: #161616;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    td {
+        text-align: left !important;
+        border-bottom: none;
+        padding: 8px 0;
+        font-size: 1rem;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #FFC107;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .preco,
+    .tamanho {
+        text-align: left;
+    }
+
+    .pizza-name {
+        font-size: 1.05rem;
+    }
+
+    .containerMenu nav a {
+        font-size: .9rem;
+        padding: 5px 8px;
+    }
 }

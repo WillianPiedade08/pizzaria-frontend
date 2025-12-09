@@ -238,10 +238,116 @@ button:hover {
     transform: scale(1.05);
 }
 
-/* Responsividade para área de autenticação */
-@media (max-width: 900px) {
-    .auth-area {
-        margin-left: 0;
-        margin-top: 10px;
+/* ===========================
+   RESPONSIVIDADE
+   =========================== */
+
+/* Telas até 992px (tablets e notebooks pequenos) */
+@media (max-width: 992px) {
+
+    .containerheader {
+        padding: 0px 20px;
+        width: 100%;
+    }
+
+    .containerMenu nav a {
+        margin: 0 15px;
+        font-size: 16px;
+    }
+
+    .reserva-container {
+        margin: 120px 20px;
+        padding: 15px;
+    }
+}
+
+/* Telas até 768px (tablets e celulares grandes) */
+@media (max-width: 768px) {
+
+    .containerheader {
+        flex-direction: column;
+        padding: 10px 20px;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .containerMenu {
+        flex-wrap: wrap;
+    }
+
+    .containerMenu nav a {
+        margin: 6px 10px;
+        font-size: 15px;
+        padding: 6px 10px;
+    }
+
+    .containerLogo img {
+        width: 90px;
+    }
+
+    .reserva-container {
+        max-width: 95%;
+        margin: 120px auto;
+        padding: 20px;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 15px;
+    }
+
+    button {
+        font-size: 15px;
+    }
+}
+
+/* Telas até 480px (celulares) */
+@media (max-width: 480px) {
+
+    .containerheader {
+        padding: 10px 10px;
+        width: 100%;
+    }
+
+    .containerMenu nav a {
+        margin: 4px 6px;
+        font-size: 13px;
+        padding: 6px 8px;
+    }
+
+    .containerLogo img {
+        width: 75px;
+    }
+
+    .reserva-container {
+        width: 94%;
+        margin: 110px auto;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input,
+    select,
+    textarea {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .mensagem-sucesso {
+        width: 90%;
+        max-width: 300px;
     }
 }

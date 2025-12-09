@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
 :root {
-    --primary-color: #4B70E2; /* Azul */
+    --primary-color: #4B70E2;
     --secondary-color: #333;
     --background-color: #f0f2f5;
     --card-background: #ffffff;
@@ -26,12 +26,13 @@ body {
     color: var(--secondary-color);
 }
 
+/* CARD */
 .card-container {
     background-color: var(--card-background);
     border-radius: 10px;
     box-shadow: var(--shadow-light);
     overflow: hidden;
-    width: 450px; /* Levemente mais largo para acomodar mais campos */
+    width: 450px;
     max-width: 90%;
     padding: 40px;
 }
@@ -45,6 +46,7 @@ body {
     display: block;
 }
 
+/* TEXTOS */
 .form-title {
     font-size: 28px;
     font-weight: 700;
@@ -58,6 +60,7 @@ body {
     margin-bottom: 25px;
 }
 
+/* INPUTS */
 .input-group {
     margin-bottom: 15px;
     text-align: left;
@@ -95,6 +98,7 @@ body {
     margin-bottom: 15px;
 }
 
+/* BOTÃO */
 .submit-btn {
     width: 100%;
     padding: 12px;
@@ -113,6 +117,7 @@ body {
     background-color: #3a5ed1;
 }
 
+/* TROCA LOGIN / CADASTRO */
 .switch-text {
     margin-top: 20px;
     font-size: 14px;
@@ -134,4 +139,49 @@ body {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+}
+
+/* 📱 RESPONSIVIDADE  ----------------------------------- */
+
+/* Tablets */
+@media (max-width: 768px) {
+    .card-container {
+        width: 95%;
+        padding: 30px;
+    }
+
+    .form-title {
+        font-size: 24px;
+    }
+}
+
+/* Celulares */
+@media (max-width: 480px) {
+    .card-container {
+        width: 100%;
+        border-radius: 0;
+        padding: 25px;
+    }
+
+    .form-title {
+        font-size: 22px;
+    }
+
+    .form-subtitle {
+        font-size: 13px;
+    }
+
+    .input-group input {
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        font-size: 16px;
+        padding: 14px;
+    }
+
+    .switch-text {
+        font-size: 13px;
+    }
 }
