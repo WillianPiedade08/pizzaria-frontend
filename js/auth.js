@@ -54,9 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('✅ Logout realizado com sucesso!');
 
         mostrarLinksAuth();
-        // Se o botão de logout for um link com href, usa esse href para redirecionar.
-        const redirectUrl = (logoutBtn && logoutBtn.getAttribute && logoutBtn.getAttribute('href')) || '../index.html';
-        window.location.href = redirectUrl;
+
+        window.location.href = '../index.html';
     }
 
     // Evento de logout
