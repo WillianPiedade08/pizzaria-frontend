@@ -1,4 +1,4 @@
-const API_URL = "https://api-pizzas-seu-ze.vercel.app"; // URL da sua API
+const API_URL = "https://api-pizzas-seu-ze.vercel.app/"; // URL da sua API
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginWrapper = document.getElementById('login-form-wrapper');
