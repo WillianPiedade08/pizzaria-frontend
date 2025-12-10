@@ -12,19 +12,16 @@
   <header>
     <button onclick="window.location.href='../index.html'">⬅️ Voltar</button>
     <h1>Seu Carrinho</h1>
-    
+
     <!-- Área de Autenticação -->
-    <div id="auth-area" class="auth-area">
-      <div id="auth-links" class="auth-links" style="display: none;">
-        <a href="./login.html" class="auth-link">Entrar</a>
-        <span class="auth-separator">|</span>
-        <a href="./login.html" class="auth-link">Registrar</a>
-      </div>
-      
-      <div id="user-info" class="user-info" style="display: none;">
-        <span class="user-greeting">Olá, <span id="user-name"></span></span>
-        <button id="logout-btn" class="logout-btn">Sair</button>
-      </div>
+    <div id="auth-links" style="display: flex;">
+      <a href="./login.html">Login</a>
+    </div>
+
+    <div id="user-info" class="user-info" style="display: none;">
+      <span class="user-greeting">Olá, <span id="user-name"></span></span>
+      <button id="logout-btn" class="logout-btn">Sair</button>
+    </div>
     </div>
   </header>
 
@@ -64,5 +61,5 @@
   <script src="../js/auth.js"></script>
 
 </body>
- 
+
 </html>

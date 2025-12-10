@@ -1,4 +1,4 @@
-const API_URL = "https://api-pizzas-seu-ze.vercel.app"; // **ATENÇÃO: Mude para a URL da sua API na Vercel**
+const API_URL = "https://api-pizzas-seu-ze.vercel.app"; // URL da sua API
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginWrapper = document.getElementById('login-form-wrapper');
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formLogin = document.getElementById('form-login');
 
     // ========================================
-    // LÓGICA DE TRANSIÇÃO ENTRE FORMULÁRIOS
+    // LÓGICA: troca entre login e cadastro
     // ========================================
     showSignupLink.addEventListener('click', (e) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========================================
-    // FUNÇÃO AUXILIAR PARA PREVENIR CLIQUES MÚLTIPLOS
+    // Prevenir múltiplos envios
     // ========================================
     function handleSubmit(form, fetchFn, buttonText = "Enviando...") {
         const submitButton = form.querySelector('button[type="submit"]');
@@ -51,17 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================
-    // CADASTRO (Criar Conta)
-    // Endpoint: POST /usuarios
+    // CADASTRO (POST /usuarios)
     // ========================================
     handleSubmit(formCadastro, async () => {
         const nome = formCadastro.querySelector('input[name="nome"]').value.trim();
         const email = formCadastro.querySelector('input[name="email"]').value.trim();
         const telefone = formCadastro.querySelector('input[name="telefone"]').value.trim();
-        const cpf = formCadastro.querySelector('input[name="cpf"]').value.trim().replace(/\D/g, ''); // Remove máscara para enviar
+        const cpf = formCadastro.querySelector('input[name="cpf"]').value.trim().replace(/\D/g, '');
         const senha = formCadastro.querySelector('input[name="senha"]').value;
 
-        // Validação no frontend
         if (!nome || !email || !telefone || !cpf || !senha) {
             alert("⚠️ Preencha todos os campos obrigatórios.");
             return;
@@ -77,137 +75,113 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        console.log("📤 Enviando cadastro:", { nome, email, telefone, cpf });
-
         try {
-            // Rota corrigida para /usuarios
             const response = await fetch(`${API_URL}/usuarios`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nome, email, telefone, cpf, senha })
             });
 
-            let data;
-            try {
-                data = await response.json();
-            } catch {
-                alert("❌ Erro ao processar resposta do servidor.");
-                return;
-            }
-
-            console.log("📥 Resposta do servidor:", data);
+            const data = await response.json();
 
             if (response.ok) {
-                alert("✅ Usuário cadastrado com sucesso! Faça login para continuar.");
+                alert("✅ Cadastro realizado! Agora faça login.");
                 showLoginLink.click();
                 formCadastro.reset();
             } else {
-                alert(`❌ ${data.error || "Erro ao cadastrar usuário."}`);
+                alert(`❌ ${data.error || "Erro ao cadastrar."}`);
             }
         } catch (error) {
-            console.error("❌ Erro na requisição:", error);
-            alert("❌ Erro de conexão com o servidor. Verifique sua internet.");
+            console.error("❌ Erro:", error);
+            alert("Erro ao conectar com o servidor.");
         }
     }, "Cadastrando...");
 
     // ========================================
-    // LOGIN (Entrar)
-    // Endpoint: POST /login
+    // LOGIN (POST /login)
     // ========================================
     handleSubmit(formLogin, async () => {
         const email = formLogin.querySelector('input[name="email"]').value.trim();
         const senha = formLogin.querySelector('input[name="senha"]').value;
 
         if (!email || !senha) {
-            alert("⚠️ E-mail e senha são obrigatórios.");
+            alert("⚠️ E-mail e senha obrigatórios.");
             return;
         }
 
-        console.log("📤 Enviando login:", { email });
-
         try {
-            // Rota corrigida para /usuarios/login
             const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, senha })
             });
 
-            let data;
-            try {
-                data = await response.json();
-            } catch {
-                alert("❌ Erro ao processar resposta do servidor.");
-                return;
-            }
-
-            console.log("📥 Resposta do servidor:", data);
+            const data = await response.json();
 
             if (response.ok) {
-                // Salva apenas o token no localStorage. Os dados do usuário serão extraídos do token.
+                // Salvar token
                 localStorage.setItem('token', data.token);
-                // O objeto 'usuarioLogado' não é mais necessário, pois os dados serão decodificados do token.
-                // No entanto, para compatibilidade com o carrinho.js, vamos salvar o ID do usuário se ele estiver no token.
-                // O auth.js agora tem a função de decodificar o token.
-                
-                // O objeto 'data' da API não contém o nome, apenas o token.
-                // O token contém o ID, email e tipo.
-                // Vamos salvar o objeto de resposta completo para o carrinho.js usar o 'tipo' se precisar.
-                localStorage.setItem('usuarioLogado', JSON.stringify(data));
 
-                alert('✅ Login bem-sucedido!');
-                // Redireciona para a página principal (index.html)
-                window.location.href = "../index.html"; 
+                // --- CORREÇÃO IMPORTANTE ---
+                // Pegamos somente o texto antes do @
+                const nomeFormatado = email.split('@')[0];
+
+                localStorage.setItem('usuarioLogado', JSON.stringify({
+                    nome: nomeFormatado,
+                    email: email
+                }));
+
+                alert("✅ Login bem-sucedido!");
+                window.location.href = "../index.html";
+
             } else {
                 alert(`❌ ${data.error || "E-mail ou senha inválidos."}`);
             }
         } catch (error) {
-            console.error("❌ Erro na requisição:", error);
-            alert("❌ Erro de conexão com o servidor. Verifique sua internet.");
+            console.error("❌ Erro:", error);
+            alert("Erro ao conectar ao servidor.");
         }
     }, "Entrando...");
 
     // ========================================
-    // MÁSCARA PARA CPF
+    // MÁSCARA CPF
     // ========================================
     const cpfInput = formCadastro.querySelector('input[name="cpf"]');
     if (cpfInput) {
         cpfInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-            
-            // Aplica máscara: 000.000.000-00
-            if (value.length > 9) {
-                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
-            } else if (value.length > 3) {
-                value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+            let v = e.target.value.replace(/\D/g, "");
+            if (v.length > 11) v = v.slice(0, 11);
+
+            if (v.length > 9) {
+                v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+            } else if (v.length > 6) {
+                v = v.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+            } else if (v.length > 3) {
+                v = v.replace(/(\d{3})(\d{1,3})/, "$1.$2");
             }
-            
-            e.target.value = value;
+
+            e.target.value = v;
         });
     }
 
     // ========================================
-    // MÁSCARA PARA TELEFONE
+    // MÁSCARA TELEFONE
     // ========================================
     const telefoneInput = formCadastro.querySelector('input[name="telefone"]');
     if (telefoneInput) {
         telefoneInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-            
-            // Aplica máscara: (00) 00000-0000 ou (00) 0000-0000
-            if (value.length > 10) {
-                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{2})(\d{4})(\d{1,4})/, '($1) $2-$3');
-            } else if (value.length > 2) {
-                value = value.replace(/(\d{2})(\d{1,5})/, '($1) $2');
+            let v = e.target.value.replace(/\D/g, "");
+            if (v.length > 11) v = v.slice(0, 11);
+
+            if (v.length > 10) {
+                v = v.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+            } else if (v.length > 6) {
+                v = v.replace(/(\d{2})(\d{4})(\d{1,4})/, "($1) $2-$3");
+            } else if (v.length > 2) {
+                v = v.replace(/(\d{2})(\d{1,5})/, "($1) $2");
             }
-            
-            e.target.value = value;
+
+            e.target.value = v;
         });
     }
 });

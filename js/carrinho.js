@@ -183,15 +183,29 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
     btnEnviar.addEventListener('click', async () => { // Adicionado 'async' aqui
       // 0. VERIFICAÇÃO DE LOGIN
       const token = localStorage.getItem('token');
-      if (!token) {
+      const usuarioLogado = localStorage.getItem('usuarioLogado');
+      
+      if (!token || !usuarioLogado) {
         alert('Você precisa estar logado para continuar ao pagamento. Redirecionando para o login.');
         window.location.href = './login.html'; // Redireciona para a página de login
         return;
       }
       
-      // Decodificar o token para obter o ID do usuário
+      // Decodificar o token para obter informações do usuário
       const payload = decodeJwt(token);
-      const usuario_id = payload ? payload.id : null;
+      
+      // Tentar obter ID do token, se não tiver, usa dados do localStorage
+      let usuario_id = payload?.userId || payload?.id || payload?.userId;
+      
+      if (!usuario_id) {
+          // Se não conseguir ID do token, tenta obter do localStorage
+          try {
+              const user = JSON.parse(usuarioLogado);
+              usuario_id = user.id || user.email;
+          } catch (e) {
+              console.warn("Erro ao obter usuário:", e);
+          }
+      }
 
       if (!usuario_id) {
           alert('Erro: Não foi possível identificar o usuário logado. Por favor, faça login novamente.');

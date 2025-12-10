@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <title>pizzaria</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -25,21 +25,15 @@
                 <nav>
                     <a href="./html/cardapio.html">Cardápio</a>
                     <a href="./html/carrinho.html" title="Ver carrinho"><i class="bi bi-cart3"></i></a>
-                    
-                    <!-- Área de Autenticação -->
-                    <div id="auth-area" class="auth-area">
-                        <!-- Quando NÃO logado -->
-                        <div id="auth-links" class="auth-links" style="display: none;">
-                            <a href="./html/login.html" class="auth-link">Entrar</a>
-                            <span class="auth-separator">|</span>
-                            <a href="./html/login.html" class="auth-link">Registrar</a>
-                        </div>
-                        
-                        <!-- Quando logado -->
-                        <div id="user-info" class="user-info" style="display: none;">
-                            <span class="user-greeting">Olá, <span id="user-name"></span></span>
-                            <button id="logout-btn" class="logout-btn">Sair</button>
-                        </div>
+
+                    <div id="auth-links" style="display: flex;">
+                        <a href="./html/login.html">Login</a>
+                    </div>
+
+                    <!-- Informações do Usuário (Visível quando logado) -->
+                    <div id="user-info" style="display: none;">
+                        <span>Olá, <strong id="user-name"></strong>!</span>
+                        <button id="logout-btn">Sair</button>
                     </div>
 
                 </nav>
@@ -61,7 +55,7 @@
 
     <script src="./js/index.js"></script>
     <script src="./js/auth.js"></script>
-    
+
 </body>
 
 </html>
