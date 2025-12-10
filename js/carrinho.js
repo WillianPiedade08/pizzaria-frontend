@@ -332,6 +332,7 @@ fetch('https://api-pizzas-seu-ze.vercel.app/pedidos')
         }
       }
     });
+    
 
     
     carregarCarrinho();
